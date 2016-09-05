@@ -19,6 +19,21 @@ class FlashAttributesSpec extends Specification {
         then:
         flashAttributes.get('name1') == 'value1'
         flashAttributes.get('name2') == 'value2'
+    }
+
+    def "removes cookie on load"() {
+        given:
+        CookieJar cookieJar = Mock()
+        cookieJar.get(FlashAttributes.COOKIE_NAME) >> """{
+            "name1" : "value1",
+            "name2" : "value2"
+        }"""
+        FlashAttributes flashAttributes = new FlashAttributes(cookieJar)
+
+        when:
+        flashAttributes.load()
+
+        then:
         1 * cookieJar.remove(FlashAttributes.COOKIE_NAME)
     }
 
