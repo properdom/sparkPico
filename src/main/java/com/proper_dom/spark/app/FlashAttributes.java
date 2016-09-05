@@ -1,6 +1,8 @@
 package com.proper_dom.spark.app;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -10,18 +12,23 @@ import java.util.Map;
 public class FlashAttributes {
 
     static final String COOKIE_NAME = FlashAttributes.class.getName();
-    private Map attributesIn;
-    private Map attributesOut;
-    private CookieJar cookieJar;
+    private final ObjectMapper mapper;
+    private final MapType mapType;
+    private final CookieJar cookieJar;
+
+    private Map<String, String> attributesIn;
+    private Map<String, String> attributesOut;
 
     public FlashAttributes(CookieJar cookieJar) {
         this.cookieJar = cookieJar;
         this.attributesIn = new HashMap<>();
         this.attributesOut = new HashMap<>();
+        this.mapper = new ObjectMapper();
+        this.mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, String.class);
     }
 
     public String get(String attribute) {
-        return (String) attributesIn.get(attribute);
+        return attributesIn.get(attribute);
     }
 
     public boolean isEmpty() {
@@ -45,25 +52,23 @@ public class FlashAttributes {
         }
     }
 
-    private String toJson(Object out) {
+    private String toJson(Map<String, String> map) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
             StringWriter sw = new StringWriter();
-            mapper.writeValue(sw, out);
+            mapper.writeValue(sw, map);
             return sw.toString();
         } catch (IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    private Map fromJson(String json) {
+    private Map<String, String> fromJson(String json) {
         if(json == null || json.length() == 0) {
             return new HashMap<>();
         }
 
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(json, Map.class);
+            return mapper.readValue(json, mapType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
