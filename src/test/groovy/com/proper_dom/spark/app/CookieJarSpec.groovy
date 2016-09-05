@@ -29,7 +29,7 @@ class CookieJarSpec extends Specification {
         cookieJar.add('name2', 'value2')
 
         then:
-        response.cookie('name2', 'value2')
+        1 * response.cookie('name2', 'value2')
     }
 
     def "can remove cookie that is present"() {
@@ -44,7 +44,7 @@ class CookieJarSpec extends Specification {
         cookieJar.remove('name3')
 
         then:
-        response.removeCookie('name3')
+        1 * response.removeCookie('name3')
     }
 
     def "will not remove cookie that isn't present"() {
