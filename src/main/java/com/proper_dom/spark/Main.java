@@ -1,7 +1,8 @@
 package com.proper_dom.spark;
 
-public class Main {
+import com.proper_dom.spark.app.App;
 
+public class Main {
     public static void main(String[] args) {
         Container container = new Container();
         container.registerComponents();

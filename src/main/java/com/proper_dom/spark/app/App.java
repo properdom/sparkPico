@@ -1,6 +1,6 @@
-package com.proper_dom.spark;
+package com.proper_dom.spark.app;
 
-import com.proper_dom.spark.controllers.Controller;
+import com.proper_dom.spark.app.controllers.Controller;
 
 import java.util.List;
 

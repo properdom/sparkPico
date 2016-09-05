@@ -1,7 +1,7 @@
-package com.proper_dom.spark.controllers;
+package com.proper_dom.spark.app.controllers;
 
-import com.proper_dom.spark.FlashAttributes;
-import com.proper_dom.spark.Renderer;
+import com.proper_dom.spark.app.FlashAttributes;
+import com.proper_dom.spark.app.Renderer;
 import spark.Request;
 import spark.Response;
 

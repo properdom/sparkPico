@@ -1,6 +1,10 @@
 package com.proper_dom.spark;
 
-import com.proper_dom.spark.controllers.HomeController;
+import com.proper_dom.spark.app.App;
+import com.proper_dom.spark.app.CookieJar;
+import com.proper_dom.spark.app.FlashAttributes;
+import com.proper_dom.spark.app.Renderer;
+import com.proper_dom.spark.app.controllers.HomeController;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;

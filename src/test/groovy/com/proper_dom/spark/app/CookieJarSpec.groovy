@@ -1,4 +1,4 @@
-package com.proper_dom.spark
+package com.proper_dom.spark.app
 
 import spark.Request
 import spark.Response
