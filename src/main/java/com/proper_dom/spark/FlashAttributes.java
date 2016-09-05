@@ -9,19 +9,23 @@ import java.util.Map;
 
 public class FlashAttributes {
 
-    private static final String COOKIE_NAME = FlashAttributes.class.getName();
+    static final String COOKIE_NAME = FlashAttributes.class.getName();
     private Map attributesIn;
     private Map attributesOut;
     private CookieJar cookieJar;
 
-    public FlashAttributes(CookieJar jar) {
-        this.cookieJar = jar;
+    public FlashAttributes(CookieJar cookieJar) {
+        this.cookieJar = cookieJar;
         this.attributesIn = new HashMap<>();
         this.attributesOut = new HashMap<>();
     }
 
     public String get(String attribute) {
         return (String) attributesIn.get(attribute);
+    }
+
+    public boolean isEmpty() {
+        return attributesIn.isEmpty();
     }
 
     public void put(String attribute, String value) {
