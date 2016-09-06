@@ -13,6 +13,5 @@ public class Main {
         router.before().with(container);
         router.get("/home").with(HomeController.class);
         router.post("/home").with(HomeController.class);
-        router.after().with(container);
     }
 }

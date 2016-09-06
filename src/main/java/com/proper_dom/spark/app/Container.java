@@ -56,9 +56,4 @@ public class Container implements Handler {
         requestContainer.addComponent(request);
         requestContainer.addComponent(response);
     }
-
-    @Override
-    public void after(Request request, Response response) {
-        clearRequestScopedContainer();
-    }
 }
