@@ -2,70 +2,77 @@ package com.proper_dom.spark.app;
 
 import spark.Spark;
 
-class Router {
+public class Router {
 
-    private enum Method {
+    private Container container;
+
+    public Router(Container container) {
+        this.container = container;
+    }
+
+    public Route get(String path) {
+        return new Route(Method.get, path, container);
+    }
+    public Route post(String path) {
+        return new Route(Method.post, path, container);
+    }
+    public Route before() {
+        return new Route(Method.before, null, container);
+    }
+    public Route after() {
+        return new Route(Method.after, null, container);
+    }
+
+    public enum Method {
         get, post, before, after
     }
 
-    private Method method;
-    private String path;
+    static class Route {
 
-    static Router get(String path) {
-        return new Router(Method.get, path);
-    }
-    static Router post(String path) {
-        return new Router(Method.post, path);
-    }
-    static Router before() {
-        return new Router(Method.before, null);
-    }
-    static Router after() {
-        return new Router(Method.after, null);
-    }
+        private Method method;
+        private String path;
+        private Container container;
 
-    private Router(Method method, String path) {
-        this.method = method;
-        this.path = path;
-    }
-
-    void with(Class<? extends Handler> componentType, Container container) {
-        if (method == Method.get) {
-            Spark.get(path, (request, response) -> container.getComponent(componentType).get(request, response));
+        public Route(Method method, String path, Container container) {
+            this.method = method;
+            this.path = path;
+            this.container = container;
         }
 
-        if (method == Method.post) {
-            Spark.post(path, (request, response) -> container.getComponent(componentType).post(request, response));
+        public void with(Class<? extends Handler> componentType) {
+            if (method == Method.get) {
+                Spark.get(path, (request, response) -> container.getComponent(componentType).get(request, response));
+            }
+
+            if (method == Method.post) {
+                Spark.post(path, (request, response) -> container.getComponent(componentType).post(request, response));
+            }
+
+            if (method == Method.before) {
+                Spark.before((request, response) -> container.getComponent(componentType).before(request, response));
+            }
+
+            if (method == Method.after) {
+                Spark.after((request, response) -> container.getComponent(componentType).after(request, response));
+            }
         }
 
-        if (method == Method.before) {
-            Spark.before((request, response) -> container.getComponent(componentType).before(request, response));
-        }
+        public void with(Handler handler) {
+            if (method == Method.get) {
+                Spark.get(path, handler::get);
+            }
 
-        if (method == Method.after) {
-            Spark.after((request, response) -> container.getComponent(componentType).after(request, response));
-        }
-    }
+            if (method == Method.post) {
+                Spark.post(path, handler::post);
+            }
 
-    void with(Handler handler) {
-        if (method == Method.get) {
-            Spark.get(path, handler::get);
-        }
+            if (method == Method.before) {
+                Spark.before(handler::before);
+            }
 
-        if (method == Method.post) {
-            Spark.post(path, handler::post);
+            if (method == Method.after) {
+                Spark.after(handler::after);
+            }
         }
-
-        if (method == Method.before) {
-            Spark.before(handler::before);
-        }
-
-        if (method == Method.after) {
-            Spark.after(handler::after);
-        }
-    }
-
-    static Container using(Container container) {
-        return container;
     }
 }
