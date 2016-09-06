@@ -3,9 +3,14 @@ package com.proper_dom.spark.app;
 import spark.Request;
 import spark.Response;
 
-public class CookieJar implements Handler {
+public class CookieJar {
     private Request request;
     private Response response;
+
+    public CookieJar(Request request, Response response) {
+        this.request = request;
+        this.response = response;
+    }
 
     public String get(String name) {
         return request.cookie(name);
@@ -19,10 +24,5 @@ public class CookieJar implements Handler {
         if(request.cookie(name) != null) {
             response.removeCookie(name);
         }
-    }
-
-    public void before(Request request, Response response) {
-        this.request = request;
-        this.response = response;
     }
 }

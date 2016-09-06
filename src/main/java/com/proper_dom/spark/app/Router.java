@@ -33,7 +33,7 @@ public class Router {
         private String path;
         private Container container;
 
-        public Route(Method method, String path, Container container) {
+        private Route(Method method, String path, Container container) {
             this.method = method;
             this.path = path;
             this.container = container;

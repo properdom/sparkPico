@@ -17,7 +17,11 @@ public class Container implements Handler {
         this.appContainer = new DefaultPicoContainer(new Caching());
     }
 
-    public void registerComponents() {
+    public void init() {
+        registerApplicationScopedComponents();
+    }
+
+    public void registerApplicationScopedComponents() {
         appContainer.addComponent(HandlebarsTemplateEngine.class);
         appContainer.addComponent(Renderer.class);
     }
@@ -29,16 +33,28 @@ public class Container implements Handler {
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        if(requestContainer == null) {
-            this.requestContainer = new DefaultPicoContainer(new Caching(), appContainer);
-            registerRequestScopedComponents();
-        }
+        initRequestScopeContainer();
         return requestContainer.getComponent(componentType);
     }
 
     public void clearRequestScopedContainer() {
         appContainer.removeChildContainer(requestContainer);
         requestContainer = null;
+    }
+
+    private void initRequestScopeContainer() {
+        if(requestContainer == null) {
+            this.requestContainer = new DefaultPicoContainer(new Caching(), appContainer);
+            registerRequestScopedComponents();
+        }
+    }
+
+    @Override
+    public void before(Request request, Response response) {
+        clearRequestScopedContainer();
+        initRequestScopeContainer();
+        requestContainer.addComponent(request);
+        requestContainer.addComponent(response);
     }
 
     @Override

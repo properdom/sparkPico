@@ -8,10 +8,9 @@ class CookieJarSpec extends Specification {
 
     def "can get cookie"() {
         given:
-        CookieJar cookieJar = new CookieJar()
+        CookieJar cookieJar = new CookieJar(request, response)
         Request request = Mock()
         Response response = Mock()
-        cookieJar.before(request, response)
         request.cookie('name1') >> 'value1'
 
         expect:
@@ -20,10 +19,9 @@ class CookieJarSpec extends Specification {
 
     def "can set cookie"() {
         given:
-        CookieJar cookieJar = new CookieJar()
+        CookieJar cookieJar = new CookieJar(request, response)
         Request request = Mock()
         Response response = Mock()
-        cookieJar.before(request, response)
 
         when:
         cookieJar.add('name2', 'value2')
@@ -34,10 +32,9 @@ class CookieJarSpec extends Specification {
 
     def "can remove cookie that is present"() {
         given:
-        CookieJar cookieJar = new CookieJar()
+        CookieJar cookieJar = new CookieJar(request, response)
         Request request = Mock()
         Response response = Mock()
-        cookieJar.before(request, response)
         request.cookie('name3') >> 'value3'
 
         when:
@@ -49,10 +46,9 @@ class CookieJarSpec extends Specification {
 
     def "will not remove cookie that isn't present"() {
         given:
-        CookieJar cookieJar = new CookieJar()
+        CookieJar cookieJar = new CookieJar(request, response)
         Request request = Mock()
         Response response = Mock()
-        cookieJar.before(request, response)
 
         when:
         cookieJar.remove('name4')
