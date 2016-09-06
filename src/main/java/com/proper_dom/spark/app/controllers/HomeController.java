@@ -1,5 +1,6 @@
 package com.proper_dom.spark.app.controllers;
 
+import com.proper_dom.spark.app.Handler;
 import com.proper_dom.spark.app.FlashAttributes;
 import com.proper_dom.spark.app.Renderer;
 import spark.Request;
@@ -8,10 +9,7 @@ import spark.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-
-public class HomeController implements Controller {
+public class HomeController implements Handler {
 
     private Renderer renderer;
     private FlashAttributes flashAttributes;
@@ -21,20 +19,14 @@ public class HomeController implements Controller {
         this.flashAttributes = flashAttributes;
     }
 
-    @Override
-    public void setupRoutes() {
-        get("/home", this::handleGet);
-        post("/home", this::handlePost);
-    }
-
-    public String handleGet(Request request, Response response) {
+    public String get(Request request, Response response) {
         flashAttributes.load();
         Map<String, String> model = new HashMap<>();
         model.put("name", flashAttributes.get("name"));
         return renderer.render(model, "home.hbs");
     }
 
-    public Response handlePost(Request request, Response response) {
+    public Response post(Request request, Response response) {
         flashAttributes.put("name", request.queryParams("name"));
         flashAttributes.store();
         response.redirect("/home", 303);

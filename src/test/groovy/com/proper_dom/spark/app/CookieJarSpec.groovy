@@ -11,7 +11,7 @@ class CookieJarSpec extends Specification {
         CookieJar cookieJar = new CookieJar()
         Request request = Mock()
         Response response = Mock()
-        cookieJar.handleBefore(request, response)
+        cookieJar.before(request, response)
         request.cookie('name1') >> 'value1'
 
         expect:
@@ -23,7 +23,7 @@ class CookieJarSpec extends Specification {
         CookieJar cookieJar = new CookieJar()
         Request request = Mock()
         Response response = Mock()
-        cookieJar.handleBefore(request, response)
+        cookieJar.before(request, response)
 
         when:
         cookieJar.add('name2', 'value2')
@@ -37,7 +37,7 @@ class CookieJarSpec extends Specification {
         CookieJar cookieJar = new CookieJar()
         Request request = Mock()
         Response response = Mock()
-        cookieJar.handleBefore(request, response)
+        cookieJar.before(request, response)
         request.cookie('name3') >> 'value3'
 
         when:
@@ -52,7 +52,7 @@ class CookieJarSpec extends Specification {
         CookieJar cookieJar = new CookieJar()
         Request request = Mock()
         Response response = Mock()
-        cookieJar.handleBefore(request, response)
+        cookieJar.before(request, response)
 
         when:
         cookieJar.remove('name4')

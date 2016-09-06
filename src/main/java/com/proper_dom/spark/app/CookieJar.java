@@ -3,9 +3,7 @@ package com.proper_dom.spark.app;
 import spark.Request;
 import spark.Response;
 
-import static spark.Spark.before;
-
-public class CookieJar implements Filter {
+public class CookieJar implements Handler {
     private Request request;
     private Response response;
 
@@ -23,13 +21,8 @@ public class CookieJar implements Filter {
         }
     }
 
-    public void handleBefore(Request request, Response response) {
+    public void before(Request request, Response response) {
         this.request = request;
         this.response = response;
-    }
-
-    @Override
-    public void setupRoutes() {
-        before(this::handleBefore);
     }
 }
