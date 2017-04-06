@@ -1,5 +1,9 @@
 package com.proper_dom.spark.app;
 
+import com.proper_dom.spark.app.controllers.Controller;
+
+import java.lang.reflect.InvocationTargetException;
+
 public class Router {
 
     private Container container;
@@ -9,8 +13,10 @@ public class Router {
         register(container);
     }
 
-    public void register(Class<? extends Handler> handler) throws IllegalAccessException, InstantiationException {
-        handler.newInstance().register(new Route(container, handler));
+    public void register(Class<? extends Controller> handler) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        handler.getDeclaredConstructor(Renderer.class, FlashAttributes.class)
+                .newInstance(null, null)
+                .register(new Route(container, handler));
     }
 
     public void register(Handler handler) {

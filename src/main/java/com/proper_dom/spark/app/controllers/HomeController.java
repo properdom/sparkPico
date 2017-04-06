@@ -7,15 +7,10 @@ import spark.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeController implements Handler {
+public class HomeController implements Controller {
 
     private Renderer renderer;
     private FlashAttributes flashAttributes;
-
-    public HomeController() {
-        this.renderer = null;
-        this.flashAttributes = null;
-    }
 
     public HomeController(Renderer renderer, FlashAttributes flashAttributes) {
         this.renderer = renderer;
