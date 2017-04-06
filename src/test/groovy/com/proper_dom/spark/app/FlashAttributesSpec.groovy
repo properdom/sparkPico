@@ -4,7 +4,7 @@ import spock.lang.Specification
 
 class FlashAttributesSpec extends Specification {
 
-    def "loads attributes from cookie removing it in the process"() {
+    def "loads attributes from cookie"() {
         given:
         CookieJar cookieJar = Mock()
         cookieJar.get(FlashAttributes.COOKIE_NAME) >> """{
@@ -21,6 +21,19 @@ class FlashAttributesSpec extends Specification {
         flashAttributes.get('name2') == 'value2'
     }
 
+    def "loads from empty cookie"() {
+        given:
+        CookieJar cookieJar = Mock()
+        cookieJar.get(FlashAttributes.COOKIE_NAME) >> ''
+        FlashAttributes flashAttributes = new FlashAttributes(cookieJar)
+
+        when:
+        flashAttributes.load()
+
+        then:
+        flashAttributes.isEmpty()
+    }
+
     def "removes cookie on load"() {
         given:
         CookieJar cookieJar = Mock()
@@ -35,19 +48,6 @@ class FlashAttributesSpec extends Specification {
 
         then:
         1 * cookieJar.remove(FlashAttributes.COOKIE_NAME)
-    }
-
-    def "loads from empty cookie"() {
-        given:
-        CookieJar cookieJar = Mock()
-        cookieJar.get(FlashAttributes.COOKIE_NAME) >> ''
-        FlashAttributes flashAttributes = new FlashAttributes(cookieJar)
-
-        when:
-        flashAttributes.load()
-
-        then:
-        flashAttributes.isEmpty()
     }
 
     def "writes out to cookie"() {

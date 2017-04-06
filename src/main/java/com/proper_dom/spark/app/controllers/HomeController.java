@@ -1,8 +1,6 @@
 package com.proper_dom.spark.app.controllers;
 
-import com.proper_dom.spark.app.Handler;
-import com.proper_dom.spark.app.FlashAttributes;
-import com.proper_dom.spark.app.Renderer;
+import com.proper_dom.spark.app.*;
 import spark.Request;
 import spark.Response;
 
@@ -13,6 +11,11 @@ public class HomeController implements Handler {
 
     private Renderer renderer;
     private FlashAttributes flashAttributes;
+
+    public HomeController() {
+        this.renderer = null;
+        this.flashAttributes = null;
+    }
 
     public HomeController(Renderer renderer, FlashAttributes flashAttributes) {
         this.renderer = renderer;
@@ -31,5 +34,11 @@ public class HomeController implements Handler {
         flashAttributes.store();
         response.redirect("/home", 303);
         return response;
+    }
+
+    @Override
+    public void register(Route route) {
+        route.get("/home");
+        route.post("/home");
     }
 }

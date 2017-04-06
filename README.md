@@ -6,4 +6,4 @@ to build:
 
 to run
 
-java -jar build/libs/sparkPico-all.jar
+java -jar build/libs/spark-all.jar

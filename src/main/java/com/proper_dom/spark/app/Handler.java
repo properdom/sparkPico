@@ -4,6 +4,8 @@ import spark.Request;
 import spark.Response;
 
 public interface Handler {
+    void register(Route route);
+
     default String get(Request request, Response response) {
         return null;
     }
